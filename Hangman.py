@@ -4,15 +4,18 @@ import random
 
 window=tk.Tk()
 window.title("Hangman Game")
-window.minsize(width=200,height=300)
+window.minsize(width=210,height=250)
 window.resizable(False,False)
-
+window.config(bg="#1F2229")
 
 
 def reset_game():
     global word, underscores, tries
     word = random.choice(words).upper()
     underscores=" ".join(["_"]*len(word))
+    underscores_list=list(underscores)
+    underscores_list[0]=word[0]
+    underscores="".join(underscores_list)
     label.config(text=underscores)
     tries=len(word)-1
     tries_text.config(text="tries left:"+str(tries))
@@ -41,22 +44,26 @@ def exit1():
 def PopupFunc(Bp):
         global popup
         popup=tk.Tk()
-        popup.title("You Win!")
+        popup.title("")
         popup.resizable(False,False)
+        popup.config(bg="#1F2229")
+
         if Bp==True:
-                win_label=tk.Label(popup,text="Congratulations! You guessed the word!",font=("Arial",14))
+                win_label=tk.Label(popup,text="Congratulations! You guessed the word!",font=("Arial",14),bg="#1F2229",fg="#E5E8EE")
                 win_label.pack(padx=20,pady=20)
-                Again_button=tk.Button(popup,text="Play Again",command=ok)
+                Again_button=tk.Button(popup,text="Play Again",command=ok,bg="#4CAF50", fg="white",activebackground="#45a049", activeforeground="white")
                 Again_button.pack()
-                Exit_button=tk.Button(popup,text="Exit",command=exit1)
+                Exit_button=tk.Button(popup,text="Exit",command=exit1,bg="#E63946", fg="white",activebackground="#c53030", activeforeground="white")
                 Exit_button.pack()
         else:
-                lose_label=tk.Label(popup,text=f"Sorry, you lost! The word was: {word}",font=("Arial",14))
+                lose_label=tk.Label(popup,text="Sorry, you lost! The word was:"+word,font=("Arial",14),bg="#1F2229",fg="#E5E8EE")
                 lose_label.pack(padx=20,pady=20)
-                Again_button=tk.Button(popup,text="Play Again",command=ok)
+                Again_button=tk.Button(popup,text="Play Again",command=ok,bg="#256327", fg="white",activebackground="#45a049", activeforeground="white")
                 Again_button.pack()
-                Exit_button=tk.Button(popup,text="Exit",command=exit1)
+                Exit_button=tk.Button(popup,text="Exit",command=exit1,bg="#E63946", fg="white",activebackground="#c53030", activeforeground="white")
                 Exit_button.pack()
+        Exit_button.config(highlightbackground="#E63946")
+        Again_button.config(highlightbackground="#256327")
 
         popup.mainloop()
 
@@ -64,7 +71,7 @@ def SubAction():
     guess=messagebox.get().upper()
     print(guess)
     print(word)
-    tries=len(word)-1
+    global tries
     position=word.find(guess)
     print(position)
 
@@ -88,7 +95,7 @@ def SubAction():
 
     else:
         result_text.config(text="Nope")
-
+    messagebox.delete(0,1)
 
 
 
@@ -96,29 +103,38 @@ words = ["PYTHON", "HANGMAN", "COMPUTER", "KEYBOARD", "PRINTER", "PROGRAM", "WIN
 word = random.choice(words).upper()
 
 underscores = " ".join(["_"]*len(word))
+underscores_list=list(underscores)
+underscores_list[0]=word[0]
+underscores="".join(underscores_list)
 
-
-label=tk.Label(window,text=underscores,font=("Arial",27))
+label=tk.Label(window,text=underscores,font=("Arial",27),bg="#1F2229",fg='#ECEFF4')
 label.grid(row=0,column=2,padx=10,pady=10)
 
 
 
-messagebox=tk.Entry(window,width=10,font=("Arial",24),justify="center",bg="lightgrey",fg="black")
+messagebox=tk.Entry(window,width=3,font=("Arial",24),justify="center",bg="#6B6C6D",fg="#eceff4",highlightbackground="#6B6C6D",border=0)
 messagebox.grid(row=1,column=2,padx=30,pady=30)
 
 messagebox.bind("<Return>", lambda event: SubAction())
 
-submit=tk.Button(window,text="Submit",font=("Arial",14), command=SubAction)
+submit=tk.Button(window,text="Submit",font=("Arial",14), command=SubAction,bg="#194B1B", fg="white", activebackground="#194B1B", activeforeground="#26C02B",border=False)
 submit.grid(row=2,column=2) 
 
-result_text=tk.Label(window,text="")
+result_text=tk.Label(window,text="",bg='#1F2229',fg='#ECEFF4')
 result_text.grid(row=3,column=2)
 
 
 tries=len(word)-1
-
-tries_text=tk.Label(window,text="tries left:"+str(tries))
+tries_text=tk.Label(window,text="tries left:"+str(tries),bg='#1F2229',fg='#ECEFF4')
 tries_text.grid(row=4,column=2)
+
+submit.config(highlightbackground="#194B1B",relief="flat")
 
 
 window.mainloop()
+
+
+
+
+
+
