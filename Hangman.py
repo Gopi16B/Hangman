@@ -14,20 +14,14 @@ def reset_game():
     word = random.choice(words).upper()
     underscores=" ".join(["_"]*len(word))
     label.config(text=underscores)
-
-
-
-
-
-
+    tries=len(word)-1
+    tries_text.config(text="tries left:"+str(tries))
+    result_text.config(text="")
+    messagebox.delete(0,1)
 
 def ok():
-    winning_popup.destroy()
+    popup.destroy()
     reset_game()
-
-
-
-
 
 def Underscore():
     global underscores
@@ -41,15 +35,36 @@ def Underscore():
             underscores="".join(underscores_list)
             label.config(text=underscores)
 def exit1():
-    winning_popup.destroy()
+    popup.destroy()
     window.destroy()
 
+def PopupFunc(Bp):
+        global popup
+        popup=tk.Tk()
+        popup.title("You Win!")
+        popup.resizable(False,False)
+        if Bp==True:
+                win_label=tk.Label(popup,text="Congratulations! You guessed the word!",font=("Arial",14))
+                win_label.pack(padx=20,pady=20)
+                Again_button=tk.Button(popup,text="Play Again",command=ok)
+                Again_button.pack()
+                Exit_button=tk.Button(popup,text="Exit",command=exit1)
+                Exit_button.pack()
+        else:
+                lose_label=tk.Label(popup,text=f"Sorry, you lost! The word was: {word}",font=("Arial",14))
+                lose_label.pack(padx=20,pady=20)
+                Again_button=tk.Button(popup,text="Play Again",command=ok)
+                Again_button.pack()
+                Exit_button=tk.Button(popup,text="Exit",command=exit1)
+                Exit_button.pack()
+
+        popup.mainloop()
 
 def SubAction():
     guess=messagebox.get().upper()
     print(guess)
     print(word)
-    try1=len(word)
+    tries=len(word)-1
     position=word.find(guess)
     print(position)
 
@@ -59,18 +74,15 @@ def SubAction():
         result_text.config(text="Nice")
         Underscore()
         if "_" not in underscores:
-            global winning_popup
-            winning_popup=tk.Tk()
-            winning_popup.title("You Win!")
-            winning_popup.resizable(False,False)
-            win_label=tk.Label(winning_popup,text="Congratulations! You guessed the word!",font=("Arial",14))
-            win_label.pack(padx=20,pady=20)
-            Again_button=tk.Button(winning_popup,text="OK",command=ok)
-            Again_button.pack()
-            # Exit_button=tk.Button(winning_popup,text="Exit",command=exit1)
-            # Exit_button.pack()
+            PopupFunc(True)
 
-            winning_popup.mainloop()
+    elif guess not in word:
+        tries-=1
+        tries_text.config(text="tries left:"+str(tries))
+        if tries==0:
+            PopupFunc(False)
+
+
             
             
 
@@ -94,6 +106,8 @@ label.grid(row=0,column=2,padx=10,pady=10)
 messagebox=tk.Entry(window,width=10,font=("Arial",24),justify="center",bg="lightgrey",fg="black")
 messagebox.grid(row=1,column=2,padx=30,pady=30)
 
+messagebox.bind("<Return>", lambda event: SubAction())
+
 submit=tk.Button(window,text="Submit",font=("Arial",14), command=SubAction)
 submit.grid(row=2,column=2) 
 
@@ -103,7 +117,7 @@ result_text.grid(row=3,column=2)
 
 tries=len(word)-1
 
-tries_text=tk.Label(window)
+tries_text=tk.Label(window,text="tries left:"+str(tries))
 tries_text.grid(row=4,column=2)
 
 
