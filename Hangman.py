@@ -1,13 +1,11 @@
 import tkinter as tk 
 import random
 
-
 window=tk.Tk()
 window.title("Hangman Game")
 window.minsize(width=210,height=250)
 window.resizable(False,False)
 window.config(bg="#1F2229")
-
 
 def reset_game():
     global word, underscores, tries
@@ -69,16 +67,14 @@ def PopupFunc(Bp):
 
 def SubAction():
     guess=messagebox.get().upper()
-    print(guess)
-    print(word)
     global tries
     position=word.find(guess)
-    print(position)
 
     if guess == "":
         result_text.config(text="Please enter a letter")
+    
     elif guess in word:
-        result_text.config(text="Nice")
+        result_text.config(text="Correct guess")
         Underscore()
         if "_" not in underscores:
             PopupFunc(True)
@@ -86,18 +82,13 @@ def SubAction():
     elif guess not in word:
         tries-=1
         tries_text.config(text="tries left:"+str(tries))
+        result_text.config(text="Wrong guess")
         if tries==0:
             PopupFunc(False)
-
-
-            
-            
-
-    else:
-        result_text.config(text="Nope")
-    messagebox.delete(0,1)
-
-
+    try:
+        messagebox.delete(0, tk.END)
+    except tk.TclError:
+        pass
 
 words = ["PYTHON", "HANGMAN", "COMPUTER", "KEYBOARD", "PRINTER", "PROGRAM", "WINDOW", "MONITOR", "INTERNET", "NETWORK"]
 word = random.choice(words).upper()
