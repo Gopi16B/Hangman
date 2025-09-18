@@ -62,7 +62,10 @@ def PopupFunc(Bp):
                 Exit_button.pack()
         Exit_button.config(highlightbackground="#E63946")
         Again_button.config(highlightbackground="#256327")
-
+        try:
+            messagebox.delete(0, tk.END)
+        except tk.TclError:
+            pass
         popup.mainloop()
 
 def SubAction():
