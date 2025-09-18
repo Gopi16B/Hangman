@@ -1,5 +1,7 @@
 Simple hangman game
 
-## Hangman V3
+## Hangman Final
 
-## The submit button somewhat works in my logic
+1.The colors and others are completed
+2.The base of the game works
+3.There might be some bugs
